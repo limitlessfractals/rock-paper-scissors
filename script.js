@@ -3,6 +3,8 @@ let computerScore = 0;
 let roundResult = "";
 let gameResultTextElement;
 let resultElement;
+let replayButton;
+let buttons;
 
 function getComputerChoice() {
   const choices = ['rock', 'paper', 'scissors'];
@@ -11,61 +13,60 @@ function getComputerChoice() {
 }
 
 function playRound(playerSelection) {
-  const computerSelection = getComputerChoice();
-  let result = "";
+    let computerSelection = getComputerChoice();
+  
+    if (playerSelection === computerSelection) {
+      roundResult = "tied";
+    } else if (
+      (playerSelection === 'rock' && computerSelection === 'scissors') ||
+      (playerSelection === 'paper' && computerSelection === 'rock') ||
+      (playerSelection === 'scissors' && computerSelection === 'paper')
+    ) {
+      roundResult = "win";
+    } else {
+      roundResult = "lose";
+    }
+    return roundResult;
+}  
 
-  if (playerSelection === computerSelection) {
-    result = "tied";
-  } else if (
-    (playerSelection === 'rock' && computerSelection === 'scissors') ||
-    (playerSelection === 'paper' && computerSelection === 'rock') ||
-    (playerSelection === 'scissors' && computerSelection === 'paper')
-  ) {
-    result = "win";
+function handleClick() {
+  const playerSelection = this.textContent.toLowerCase();
+  playRound(playerSelection);
+
+  if (roundResult === "win") {
+    playerScore += 1;
+    console.log(roundResult);
+    resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
+  } else if (roundResult === "lose") {
+    computerScore += 1;
+    console.log(roundResult);
+    resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
   } else {
-    result = "lose";
+    console.log(roundResult);
+    resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
+    return;
   }
 
-  return result;
+  if (playerScore === 5 || computerScore === 5) {
+    if (playerScore > computerScore) {
+      gameResultTextElement.textContent = "You won the game!";
+    } else {
+      gameResultTextElement.textContent = "Computer won the game!";
+    }
+    replayButton.style.display = "block"; // Show replay button
+    buttons.forEach((button) => {
+      button.removeEventListener('click', handleClick);
+    });
+  }
 }
 
 function game() {
-  const buttons = document.querySelectorAll('.btn-block');
+  buttons = document.querySelectorAll('.btn-block');
   resultElement = document.querySelector('.result');
   gameResultTextElement = document.getElementById('game-result-text');
-  const replayButton = document.getElementById('replay-button');
+  replayButton = document.getElementById('replay-button');
   
-  resultElement.textContent = "";
-  gameResultTextElement.textContent = "";
   replayButton.style.display = "none"; // Hide replay button initially
-
-  const handleClick = function() {
-    const playerSelection = this.textContent.toLowerCase();
-    roundResult = playRound(playerSelection);
-
-    if (roundResult === "win") {
-      playerScore += 1;
-      resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
-    } else if (roundResult === "lose") {
-      computerScore += 1;
-      resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
-    } else {
-      resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
-      return;
-    }
-
-    if (playerScore === 5 || computerScore === 5) {
-      if (playerScore > computerScore) {
-        gameResultTextElement.textContent = "You won the game!";
-      } else {
-        gameResultTextElement.textContent = "Computer won the game!";
-      }
-      replayButton.style.display = "block"; // Show replay button
-      buttons.forEach((button) => {
-        button.removeEventListener('click', handleClick);
-      });
-    }
-  };
 
   buttons.forEach((button) => {
     button.addEventListener('click', handleClick);
