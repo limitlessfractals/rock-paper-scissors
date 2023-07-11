@@ -17,32 +17,33 @@ function playRound(playerSelection) {
   
     if (playerSelection === computerSelection) {
       roundResult = "tied";
+      console.log(playerSelection, computerSelection, roundResult)
     } else if (
       (playerSelection === 'rock' && computerSelection === 'scissors') ||
       (playerSelection === 'paper' && computerSelection === 'rock') ||
       (playerSelection === 'scissors' && computerSelection === 'paper')
     ) {
       roundResult = "win";
+      console.log(playerSelection, computerSelection, roundResult)
     } else {
       roundResult = "lose";
+      console.log(playerSelection, computerSelection, roundResult)
     }
+    
     return roundResult;
 }  
 
 function handleClick() {
-  const playerSelection = this.textContent.toLowerCase();
-  playRound(playerSelection);
+    const playerSelection = this.textContent.split(' ')[1].toLowerCase();
+    playRound(playerSelection);
 
   if (roundResult === "win") {
     playerScore += 1;
-    console.log(roundResult);
     resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
   } else if (roundResult === "lose") {
     computerScore += 1;
-    console.log(roundResult);
     resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
   } else {
-    console.log(roundResult);
     resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
     return;
   }
