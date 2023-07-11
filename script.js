@@ -1,6 +1,8 @@
 let playerScore = 0;
 let computerScore = 0;
 let roundResult = "";
+let gameResultTextElement;
+let resultElement;
 
 function getComputerChoice() {
   const choices = ['rock', 'paper', 'scissors'];
@@ -24,42 +26,59 @@ function playRound(playerSelection) {
     result = "lose";
   }
 
-  // console.log(`Player: ${playerSelection} | Computer: ${computerSelection} | Result: ${result}`);
   return result;
 }
 
 function game() {
-  playerScore = 0;
-  computerScore = 0;
-  roundResult = "";
-
   const buttons = document.querySelectorAll('.btn-block');
-  buttons.forEach((button) => {
-    button.addEventListener('click', function() {
-      const playerSelection = button.textContent.toLowerCase();
-      roundResult = playRound(playerSelection);
+  resultElement = document.querySelector('.result');
+  gameResultTextElement = document.getElementById('game-result-text');
+  const replayButton = document.getElementById('replay-button');
+  
+  resultElement.textContent = "";
+  gameResultTextElement.textContent = "";
+  replayButton.style.display = "none"; // Hide replay button initially
 
-      if (roundResult === "win") {
-        playerScore += 1;
-        console.log(`Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`);
-      } else if (roundResult === "lose") {
-        computerScore += 1;
-        console.log(`Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`);
+  const handleClick = function() {
+    const playerSelection = this.textContent.toLowerCase();
+    roundResult = playRound(playerSelection);
+
+    if (roundResult === "win") {
+      playerScore += 1;
+      resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
+    } else if (roundResult === "lose") {
+      computerScore += 1;
+      resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
+    } else {
+      resultElement.textContent = `Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`;
+      return;
+    }
+
+    if (playerScore === 5 || computerScore === 5) {
+      if (playerScore > computerScore) {
+        gameResultTextElement.textContent = "You won the game!";
       } else {
-        console.log(`Result: You ${roundResult}! | Player: ${playerScore} | Computer: ${computerScore}`);
-        return; // Use `return` instead of `continue` to exit the function
+        gameResultTextElement.textContent = "Computer won the game!";
       }
+      replayButton.style.display = "block"; // Show replay button
+      buttons.forEach((button) => {
+        button.removeEventListener('click', handleClick);
+      });
+    }
+  };
 
-      if (playerScore === 5 || computerScore === 5) {
-        // Display final result
-        if (playerScore > computerScore) {
-          console.log("You won the game!");
-        } else {
-          console.log("Computer won the game!");
-        }
-        playerScore = 0;
-        computerScore = 0;
-      }
+  buttons.forEach((button) => {
+    button.addEventListener('click', handleClick);
+  });
+
+  replayButton.addEventListener('click', function() {
+    playerScore = 0;
+    computerScore = 0;
+    resultElement.textContent = "";
+    gameResultTextElement.textContent = "";
+    replayButton.style.display = "none";
+    buttons.forEach((button) => {
+      button.addEventListener('click', handleClick);
     });
   });
 }
