@@ -1,0 +1,55 @@
+/* styles.css */
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.result {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.game-result {
+  margin-top: 20px;
+}
+
+.game-result span {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+#replay-button {
+  display: none;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: 2px solid #333;
+  background-color: #dd0202;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#replay-button:hover {
+  background-color: #333;
+  color: #fff;
+}
+
